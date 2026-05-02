@@ -1,0 +1,6 @@
+streamlit
+pandas
+python-dotenv
+llama-index
+llama-index-llms-groq
+streamlit-mic-recorder
