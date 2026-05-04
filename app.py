@@ -32,13 +32,19 @@ if "chat_count" not in st.session_state:
 
 # ===== SIDEBAR =====
 with st.sidebar:
-    st.title("Navigasi")
+    # st.title("Navigasi")
 
     if st.button("🏠 Home"):
         st.session_state.page = "Home"
 
     if st.button("🤖 Chatbot"):
         st.session_state.page = "Chatbot"
+
+    if st.button("ℹ️ About"):
+        st.session_state.page = "About"
+
+    if st.button("🗂️ Sistem AI"):
+        st.session_state.page = "Database"
 
     st.divider()
 
@@ -104,6 +110,22 @@ with st.sidebar:
 
         st.caption("Made by Nadya Nurjzillani")
 
+    if st.session_state.page == "About":
+
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image("logo.png", width=100)
+
+        st.caption("Made by Nadya Nurjzillani")
+
+    if st.session_state.page == "Database":
+
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.image("logo.png", width=100)
+
+        st.caption("Made by Nadya Nurjzillani")
+
 # ===== HOME =====
 if st.session_state.page == "Home":
     st.title("🎓 AI Analisis Data Dosen Universitas")
@@ -150,6 +172,10 @@ if st.session_state.page == "Home":
             st.subheader("🏫 Data Fakultas")
             df_fakultas = pd.read_sql_query("SELECT * FROM fakultas LIMIT 5", conn)
             st.dataframe(df_fakultas, use_container_width=True)
+
+            st.subheader(" Jabatan Fungsional")
+            df_jabatan = pd.read_sql_query("SELECT * FROM jabatan_fungsional LIMIT 5", conn)
+            st.dataframe(df_jabatan, use_container_width=True)
 
             st.subheader("💰 Data Remunerasi")
             df_remun = pd.read_sql_query("SELECT * FROM remunerasi LIMIT 5", conn)
@@ -444,3 +470,159 @@ elif st.session_state.page == "Chatbot":
                     st.error("AI tidak mengembalikan format JSON yang benar. Silakan coba lagi.")
                 except Exception as e:
                     st.error(f"Terjadi kesalahan: {str(e)}")
+
+elif st.session_state.page == "About":
+    st.title("ℹ️ Tentang Aplikasi")
+
+    # ===== DESKRIPSI =====
+    st.write("""
+    **AI Analisis Data Dosen** adalah aplikasi berbasis kecerdasan buatan 
+    yang dirancang untuk membantu analisis data dosen secara cepat, 
+    interaktif, dan mudah digunakan.
+
+    Aplikasi ini mampu mengubah pertanyaan pengguna menjadi query SQL 
+    dan menampilkan hasil dalam bentuk tabel, grafik, serta insight otomatis.
+    """)
+
+    st.divider()
+
+    col1, col2 = st.columns([1, 2])
+
+    # ===== FOTO / IDENTITAS =====
+    with col1:
+        st.image("profile.png", width=150)  
+        st.caption("Nadya Nurjzillani - Developer")  
+
+    # ===== PROFIL =====
+    with col2:
+        st.header("Tentang Pembuat")
+        st.write("""
+        **Nadya Nurjzillani**  
+        Siswi / Developer  
+
+        Pengembang aplikasi AI Analisis Data Dosen berbasis Streamlit 
+        yang mengintegrasikan teknologi Large Language Model (LLM) 
+        untuk analisis data secara otomatis.
+        """)
+
+    st.divider()
+
+    # ===== TUJUAN =====
+    st.header("Tujuan Aplikasi")
+    st.write("""
+    - Membantu analisis data dosen secara cepat dan efisien  
+    - Mempermudah pengguna dalam memahami data melalui visualisasi  
+    - Mengimplementasikan teknologi AI dalam bidang pendidikan  
+    """)
+
+    # ===== FITUR =====
+    st.header("Fitur Utama")
+    st.write("""
+    - 🤖 Chatbot AI berbasis data  
+    - 📊 Visualisasi data otomatis (chart)  
+    - 📂 Export data ke CSV  
+    - 🖼️ Menampilkan foto dosen  
+    - 🎤 Input suara untuk pertanyaan  
+    """)
+
+    # ===== TEKNOLOGI =====
+    st.header("Teknologi yang Digunakan")
+    st.write("""
+    - **Streamlit** → antarmuka aplikasi  
+    - **SQLite** → database  
+    - **Groq LLM** → pemrosesan AI  
+    - **Python** → backend logic  
+    """)
+
+    st.divider()
+
+    # ===== KONTAK =====
+    st.header("📬 Kontak")
+    st.write("""
+    📧 Email: nadyanurjzillani@Gmail.com\n
+    📱 WhatsApp: +62 857-2855-3651\n
+    📷 Instagram: @nadya_zilla\n
+    """)
+
+    st.divider()
+
+    # ===== FOOTER =====
+    st.caption("© 2026 AI Analisis Data Dosen | Dibuat oleh Nadya Nurjzillani")
+
+elif st.session_state.page == "Database":
+    st.title("🗂️ Database & Sistem AI")
+
+    tab1, tab2, tab3, tab4 = st.tabs([
+    "📊 Data", 
+    "🧠 Prompt AI", 
+    "🗂️ Schema", 
+    "💻 Source Code"
+    ])
+
+    with tab1:
+        st.header("📊 Isi Database")
+
+        try:
+            with sqlite3.connect("universitas.db") as conn:
+
+                subtab1, subtab2, subtab3, subtab4 = st.tabs([
+                    "Dosen", "Fakultas", "Remunerasi", "Jabatan Fusional"
+                ])
+
+                with subtab1:
+                    df = pd.read_sql_query("SELECT * FROM dosen", conn)
+                    st.dataframe(df, use_container_width=True)
+                    st.caption(f"{len(df)} data dosen")
+
+                with subtab2:
+                    df = pd.read_sql_query("SELECT * FROM fakultas", conn)
+                    st.dataframe(df, use_container_width=True)
+                    st.caption(f"{len(df)} data fakultas")
+
+                with subtab3:
+                    df = pd.read_sql_query("SELECT * FROM jabatan_fungsional", conn)
+                    st.dataframe(df, use_container_width=True)
+                    st.caption(f"{len(df)} data jabatan fungsional")
+
+                with subtab4:
+                    df = pd.read_sql_query("SELECT * FROM remunerasi", conn)
+                    st.dataframe(df, use_container_width=True)
+                    st.caption(f"{len(df)} data remunerasi")
+
+        except Exception as e:
+            st.error(f"Gagal load database: {e}")
+
+    with tab2:
+        st.header("🧠 SYSTEM PROMPT AI")
+
+        st.info("Prompt ini digunakan AI untuk generate SQL dan jawaban.")
+
+        st.code(SYSTEM_PROMPT, language="python")
+
+    with tab3:
+        st.header("🗂️ Struktur Database")
+
+        st.info("Schema ini digunakan AI untuk memahami tabel.")
+
+        st.code(DATABASE_SCHEMA, language="sql")
+
+    with tab4:
+        st.header("💻 Source Code Aplikasi")
+
+        st.info("Berikut adalah kode utama aplikasi AI Dosen berbasis Streamlit.")
+
+        show_code = st.checkbox("Tampilkan Source Code")
+
+        if show_code:
+            try:
+                with open(__file__, "r", encoding="utf-8") as f:
+                    code = f.read()
+
+                st.code(code, language="python")
+
+            except Exception:
+                st.warning("Tidak bisa membaca file otomatis.")
+
+                st.code("""
+    # Tempelkan kode utama di sini jika deploy tidak mendukung __file__
+                """, language="python")
