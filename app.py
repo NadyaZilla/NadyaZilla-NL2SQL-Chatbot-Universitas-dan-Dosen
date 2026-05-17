@@ -66,6 +66,7 @@ with st.sidebar:
 
         st.success(random.choice(welcome))
 
+        st.caption("Prompt Suara")
         input_suara = speech_to_text(
             language='id',
             start_prompt="🎤 Mulai",
