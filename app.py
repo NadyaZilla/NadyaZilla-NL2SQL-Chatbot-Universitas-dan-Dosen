@@ -84,7 +84,7 @@ with st.sidebar:
                 "openai/gpt-oss-120b"
             ]
         )
-
+        
         temperature = st.slider(
             "Temperature",
             0.0,
@@ -92,7 +92,11 @@ with st.sidebar:
             0.1,
             0.05
         )
-
+        
+        # SIMPAN KE SESSION
+        st.session_state.model = model
+        st.session_state.temperature = temperature
+        st.session_state.input_suara = input_suara
         if st.button("Reset Chat", use_container_width=True):
             st.session_state.messages = []
             st.rerun()
